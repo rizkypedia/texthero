@@ -22,11 +22,12 @@ class Tokenizer
         }
         
         $words = $this->tokenizeWords();
-
+        $countWords = count($words);
+        $lastWordOfText = $words[$countWords-1];
         foreach($words as $word) 
         {
             $tmpSentence.=$word . " ";
-            if ($this->isEndOfSentence($word)) {
+            if ($this->isEndOfSentence($word, $word === $lastWordOfText)) {
                 $sentences[] = trim($tmpSentence);
                 $tmpSentence="";
             }
@@ -40,8 +41,11 @@ class Tokenizer
         return explode(" ", $this->textbody);
     }
     
-    private function isEndOfSentence(string $word): bool
+    private function isEndOfSentence(string $word, bool $isLastWordOfText=false): bool
     {
+        if ($isLastWordOfText) {
+            return true;
+        }
         $chars = array_reverse(mb_str_split($word));
         
         return in_array($chars[0], $this->punctuationMarks);
