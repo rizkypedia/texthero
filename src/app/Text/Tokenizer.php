@@ -5,6 +5,7 @@ namespace Texthero\Text;
 class Tokenizer
 {
     private string $textbody;
+    private array $punctuationMarks = [".","?","!"];
 
     public function __construct(string $textbody)
     {
@@ -21,8 +22,7 @@ class Tokenizer
         }
         
         $words = $this->tokenizeWords();
-        $countWords = count($words);
-        $lastWord = $words[$countWords-1];
+
         foreach($words as $word) 
         {
             $tmpSentence.=$word . " ";
@@ -44,7 +44,7 @@ class Tokenizer
     {
         $chars = array_reverse(mb_str_split($word));
         
-        return $chars[0] === ".";
+        return in_array($chars[0], $this->punctuationMarks);
         
     }
 
